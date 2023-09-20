@@ -22,26 +22,22 @@ public class Main {
     private static void criarInterface() {
         JFrame mainFrame = new JFrame("Monitor de Gerenciamento de Insumos");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        BotoesManager botoesManager = new BotoesManager(mainFrame);
         
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 2)); // GridLayout com 2 linhas e 1 coluna
+        botoesManager.adicionarBotao("Gráfico de Insumos (Medicamentos)", GraficoDeBarrasRemedio.class);
         
-        BotoesManagerRemedio botaoManagerRemedio = new BotoesManagerRemedio(mainFrame);
-        botaoManagerRemedio.adicionarBotao("Gráfico de Insumos (Medicamentos)");
+        botoesManager.adicionarBotao("Gráfico de Insumos (Itens de Atenção Básica)", GraficoDeBarrasIAB.class);
         
-        BotoesManagerIAB botaoManagerIAB = new BotoesManagerIAB(mainFrame);
-        botaoManagerIAB.adicionarBotao("Gráfico de Insumos (Itens de Atenção Básica)");
+        botoesManager.adicionarBotao("Gráfico de Insumos (Vacinas - Crianças)", GraficoDeBarrasVacinasCriancas.class);
+        
+        botoesManager.adicionarBotao("Gráfico de Insumos (Vacinas - Adultos)", GraficoDeBarrasVacinas.class);
 
-        BotoesManagerVacinas1 botaoManagerVacinas1 = new BotoesManagerVacinas1(mainFrame);
-        botaoManagerVacinas1.adicionarBotao("Gráfico de Insumos (Vacinas - Crianças)");
+        botoesManager.adicionarBotao("Gráfico de Insumos (Testes Rápidos)", GraficoDeBarrasTR.class);
 
-        BotoesManagerVacinas2 botaoManagerVacinas2 = new BotoesManagerVacinas2(mainFrame);
-        botaoManagerVacinas2.adicionarBotao("Gráfico de Insumos (Vacinas - Adultos)");
+        botoesManager.adicionarBotao("Gráfico de Insumos (Itens de Distribuição Gratuita)", GraficoDeBarrasDG.class);
 
-        BotoesManagerTR botaoManagerTR = new BotoesManagerTR(mainFrame);
-        botaoManagerTR.adicionarBotao("Gráfico de Insumos (Testes Rápidos)");
-
-        BotoesManagerDG botaoManagerDG = new BotoesManagerDG(mainFrame);
-        botaoManagerDG.adicionarBotao("Gráfico de Insumos (Itens de Distribuição Gratuita)");
+        JPanel buttonPanel = botoesManager.getPanel(); // Obtenha o painel do BotoesManager
 
         JButton selecionarCSVButton = new JButton("Selecionar Arquivo CSV");
         selecionarCSVButton.addActionListener(new ActionListener() {
@@ -63,16 +59,10 @@ public class Main {
                 }
             }
         });
-        buttonPanel.add(botaoManagerRemedio.getPanel()); // Adicione o painel de botões do manager remédio
-        buttonPanel.add(botaoManagerIAB.getPanel()); // Adicione o painel de botões do manager IAB
-        buttonPanel.add(botaoManagerVacinas1.getPanel());
-        buttonPanel.add(botaoManagerVacinas2.getPanel());
-        buttonPanel.add(botaoManagerTR.getPanel());
-        buttonPanel.add(botaoManagerDG.getPanel());
+
         buttonPanel.add(selecionarCSVButton);
         
-        mainFrame.add(buttonPanel); // Adicione o painel de botões à janela principal
-
+        mainFrame.add(buttonPanel);
         mainFrame.pack();
         mainFrame.setSize(800, 400);
         mainFrame.setLocationRelativeTo(null);
