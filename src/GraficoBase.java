@@ -1,38 +1,89 @@
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import java.io.IOException;
+import java.nio.file.Paths;
 import javax.swing.*;
 import java.awt.*;
 
-// Classe abstrata que serve como base para a criação de gráficos
 abstract class GraficoBase {
-    protected DefaultCategoryDataset dataset; // Conjunto de dados para o gráfico
+    private final String entradaColumn;
+    private final String saidaColumn;
+    private final String titulo;
+    private final String eixoXLabel;
 
-    // Construtor da classe
-    public GraficoBase() {
-        dataset = createDataset(); // Inicializa o conjunto de dados chamando o método abstrato
+    protected GraficoBase(String entradaColumn, String saidaColumn, String titulo, String eixoXLabel) {
+        this.entradaColumn = entradaColumn;
+        this.saidaColumn = saidaColumn;
+        this.titulo = titulo;
+        this.eixoXLabel = eixoXLabel;
     }
 
-    // Método abstrato para criar o conjunto de dados (deve ser implementado nas classes filhas)
-    protected abstract DefaultCategoryDataset createDataset();
+    protected DefaultCategoryDataset createDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-    // Método abstrato para criar o gráfico (deve ser implementado nas classes filhas)
-    protected abstract JFreeChart createChart(DefaultCategoryDataset dataset);
+        try {
+            CSVParser parser = CSVParser.parse(
+                Paths.get("dados.csv").toFile(),
+                java.nio.charset.StandardCharsets.UTF_8,
+                CSVFormat.DEFAULT.withFirstRecordAsHeader()
+            );
 
-    // Método para exibir o gráfico em uma nova janela
-    public void exibir() {
-        JFrame frame = new JFrame(getTitulo()); // Cria uma nova janela com o título especificado
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Define a ação ao fechar a janela
+            int saldo = 0;
 
-        JFreeChart chart = createChart(dataset); // Cria o gráfico chamando o método abstrato
-        ChartPanel chartPanel = new ChartPanel(chart); // Cria um painel para exibir o gráfico
-        chartPanel.setPreferredSize(new Dimension(1400, 700)); // Define o tamanho do painel do gráfico
-        frame.getContentPane().add(chartPanel); // Adiciona o painel do gráfico à janela
+            for (CSVRecord record : parser) {
+                String mes = record.get("Mes");
 
-        frame.pack(); // Ajusta o tamanho da janela para se ajustar ao gráfico
-        frame.setVisible(true); // Torna a janela visível
+                int entrada = Integer.parseInt(record.get(entradaColumn));
+                int saida = Integer.parseInt(record.get(saidaColumn));
+
+                saldo += entrada - saida;
+
+                dataset.addValue(entrada, "Entrada", mes);
+                dataset.addValue(saida, "Saída", mes);
+                dataset.addValue(saldo, "Saldo", mes);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dataset;
     }
 
-    // Método abstrato para obter o título do gráfico (deve ser implementado nas classes filhas)
+    protected JFreeChart createChart(DefaultCategoryDataset dataset) {
+        JFreeChart chart = ChartFactory.createBarChart(
+            titulo,
+            eixoXLabel,
+            "Quantidade de Insumos",
+            dataset,
+            PlotOrientation.VERTICAL,
+            true,
+            true,
+            false
+        );
+
+        return chart;
+    }
+
     protected abstract String getTitulo();
+
+    protected void exibir() {
+        JFrame frame = new JFrame(getTitulo());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JFreeChart chart = createChart(createDataset());
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(1400, 700));
+        frame.getContentPane().add(chartPanel);
+
+        frame.pack();
+        frame.setVisible(true);
+    }
 }
+
+
