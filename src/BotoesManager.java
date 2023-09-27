@@ -16,11 +16,11 @@ public class BotoesManager {
         return panel;
     }
 
-    public void adicionarBotao(String nomeBotao, Class<?> classeEspecifica) {
+    public void adicionarBotao(String nomeBotao, Class<?> classeEspecifica, String anoSelecionado) {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    GraficoBase grafico = (GraficoBase) classeEspecifica.getDeclaredConstructor().newInstance();
+                    GraficoBase grafico = (GraficoBase) classeEspecifica.getDeclaredConstructor(String.class).newInstance(anoSelecionado);
                     grafico.exibir();
                 } catch (Exception ex) {
                     ex.printStackTrace();
