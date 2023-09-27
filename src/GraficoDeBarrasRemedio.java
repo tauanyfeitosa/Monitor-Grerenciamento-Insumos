@@ -1,6 +1,7 @@
-class GraficoDeBarrasRemedio extends GraficoBase {
-    public GraficoDeBarrasRemedio() {
-        super("Entrada - Remedios", "Saida - Remedios", "Gráfico de Barras - Entrada e Saída de Medicamentos por Mês", "Mês (de jun de 2022 a mai de 2023)");
+public class GraficoDeBarrasRemedio extends GraficoBase {
+    public GraficoDeBarrasRemedio(String anoSelecionado) {
+        super("Entrada - Remedios", "Saida - Remedios", 
+        "Gráfico de Barras - Entrada e Saída de Medicamentos por Mês", anoSelecionado);
     }
 
     @Override

@@ -1,6 +1,7 @@
-class GraficoDeBarrasVacinasCriancas extends GraficoBase {
-    public GraficoDeBarrasVacinasCriancas() {
-        super("Entrada - Vacinas1", "Saida - Vacinas1", "Gráfico de Barras - Entrada e Saída de Medicamentos por Mês", "Mês (de jun de 2022 a mai de 2023)");
+public class GraficoDeBarrasVacinasCriancas extends GraficoBase {
+    public GraficoDeBarrasVacinasCriancas(String anoSelecionado) {
+        super("Entrada - Vacinas1", "Saida - Vacinas1", 
+        "Gráfico de Barras - Entrada e Saída de Vacinas (Crianças) por Mês", anoSelecionado);
     }
 
     @Override

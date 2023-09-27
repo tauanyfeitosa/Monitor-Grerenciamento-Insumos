@@ -1,6 +1,7 @@
-class GraficoDeBarrasTR extends GraficoBase {
-    public GraficoDeBarrasTR() {
-        super("Entrada - TR", "Saida - TR", "Gráfico de Barras - Entrada e Saída de Medicamentos por Mês", "Mês (de jun de 2022 a mai de 2023)");
+public class GraficoDeBarrasTR extends GraficoBase {
+    public GraficoDeBarrasTR(String anoSelecionado) {
+        super("Entrada - TR", "Saida - TR", 
+        "Gráfico de Barras - Entrada e Saída de Testes Rápidos por Mês", anoSelecionado);
     }
 
     @Override
