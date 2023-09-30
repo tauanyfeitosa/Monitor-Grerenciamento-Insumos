@@ -80,6 +80,8 @@ public class ManipulacaoCSV {
                 // Atualize o saldo no TreeMap com base no ano
                 saldosPorAno.put(ano, saldoAnterior);
             }
+
+            System.out.println(saldosPorAno);
             
             int contador = 0;
             int saldo = 0;
@@ -105,6 +107,8 @@ public class ManipulacaoCSV {
                     dataset.addValue(entrada, "Entrada", mes);
                     dataset.addValue(saida, "Saída", mes);
                     dataset.addValue(saldo, "Saldo", mes);
+
+                    System.out.println(saldo);
                 }
             }
 

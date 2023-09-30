@@ -6,13 +6,20 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
+/**
+ * A classe `GUIUsuario` é responsável por criar a interface gráfica do aplicativo
+ * de monitoramento de gerenciamento de insumos a partir de um arquivo CSV.
+ */
 public class GUIUsuario {
-    private static File selectedCSVFile;
-    private static JComboBox<String> comboBoxAno;
-    private static JFrame mainFrame;
-    private static String anoSelecionado = "";
-    private static JPanel graphButtonPanel;
+    private static File selectedCSVFile; // O arquivo CSV selecionado pelo usuário.
+    private static JComboBox<String> comboBoxAno; // Um componente de seleção de ano na interface.
+    private static JFrame mainFrame; // A janela principal da interface.
+    private static String anoSelecionado = ""; // O ano selecionado pelo usuário.
+    private static JPanel graphButtonPanel; // Um painel para botões que geram gráficos.
 
+    /**
+     * Método principal para criar a GUI do aplicativo.
+     */
     public static void criarGUI() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -27,9 +34,13 @@ public class GUIUsuario {
         });
     }
 
+    /**
+     * Cria a interface gráfica do aplicativo.
+     */
     private static void criarInterface() {
         Set<String> anosSet = new HashSet<>();
 
+        // Lê o arquivo CSV para obter os anos únicos
         try (BufferedReader reader = new BufferedReader(new FileReader("dados.csv"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -43,9 +54,14 @@ public class GUIUsuario {
             e.printStackTrace();
         }
 
+        // Converte os anos únicos em um array e ordena em ordem reversa
         String[] anos = anosSet.toArray(new String[0]);
         Arrays.sort(anos, Collections.reverseOrder());
+
+        // Cria um combobox para selecionar o ano
         comboBoxAno = new JComboBox<>(anos);
+
+        // Define um ouvinte de ação para o combobox
         comboBoxAno.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +80,8 @@ public class GUIUsuario {
         JPanel buttonPanel = botoesManager.getPanel();
 
         JButton selecionarCSVButton = new JButton("Selecionar Arquivo CSV");
+
+        // Define um ouvinte de ação para o botão "Selecionar Arquivo CSV"
         selecionarCSVButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -71,10 +89,11 @@ public class GUIUsuario {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     selectedCSVFile = fileChooser.getSelectedFile();
                     JOptionPane.showMessageDialog(null, "Arquivo CSV selecionado: " + selectedCSVFile.getName());
-
+        
                     try {
-                        Files.copy(selectedCSVFile.toPath(), new File(selectedCSVFile.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        JOptionPane.showMessageDialog(null, "Arquivo CSV copiado para a raiz do projeto.");
+                        // Copia o arquivo CSV selecionado para a raiz do projeto com o nome "dados.csv"
+                        Files.copy(selectedCSVFile.toPath(), new File("dados.csv").toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        JOptionPane.showMessageDialog(null, "Arquivo CSV copiado como 'dados.csv' para a raiz do projeto.");
                         atualizarComboBoxAno();
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -99,6 +118,9 @@ public class GUIUsuario {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Atualiza o combobox de seleção de ano com os anos encontrados no arquivo CSV.
+     */
     private static void atualizarComboBoxAno() {
         Set<String> anosSet = new HashSet<>();
 
@@ -123,9 +145,14 @@ public class GUIUsuario {
         }
     }
 
+    /**
+     * Atualiza os gráficos com base no ano selecionado.
+     * @param anoSelecionado O ano selecionado pelo usuário.
+     */
     private static void atualizarGraficos(String anoSelecionado) {
         BotoesManager botoesManager = new BotoesManager(mainFrame);
 
+        // Adiciona botões para gerar gráficos com base no ano selecionado
         botoesManager.adicionarBotao("Gráfico de Insumos (Medicamentos)", GraficoDeBarrasRemedio.class, anoSelecionado);
         botoesManager.adicionarBotao("Gráfico de Insumos (Itens de Atenção Básica)", GraficoDeBarrasIAB.class, anoSelecionado);
         botoesManager.adicionarBotao("Gráfico de Insumos (Vacinas - Crianças)", GraficoDeBarrasVacinasCriancas.class, anoSelecionado);
@@ -140,4 +167,3 @@ public class GUIUsuario {
         graphButtonPanel.repaint();
     }
 }
-
