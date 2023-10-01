@@ -26,12 +26,10 @@ Esses gráficos fornecem uma visualização clara e eficaz das informações rel
 
 As bibliotecas necessárias já foram referenciadas nos settings do projeto. Para utilizá-lo, siga os seguintes passos:
 
-1. Certifique-se de ter o Java instalado em seu sistema.
-2. Baixe ou clone este repositório em seu computador.
-3. Certifique-se de que o arquivo de dados esteja presente na raiz do projeto e nomeado como "dados.csv".
-4. O arquivo de dados deve seguir o formato contido no link:
-
-(https://docs.google.com/spreadsheets/d/1NXjGZJTD1eV5_q9HHpXDEz7jBQsdqty8mP6KlmRMIXU/edit?usp=sharing)
+1. Baixe ou clone este repositório em seu computador.
+2. Certifique-se de que o arquivo de dados esteja presente na raiz do projeto e nomeado como "dados.csv".
+3. O arquivo de dados deve seguir o formato contido no link: [dados.csv](https://docs.google.com/spreadsheets/d/1NXjGZJTD1eV5_q9HHpXDEz7jBQsdqty8mP6KlmRMIXU/edit?usp=sharing)
+4. Execute o projeto utilizando um ambiente Python de sua escolha.
 
 5. Compile e execute o projeto usando um compilador Java de sua escolha.
 
